@@ -6,6 +6,8 @@ using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
+using Avalonia;
+using Avalonia.Data;
 using Reative.ViewModels;
 
 namespace Reative.Views
@@ -45,8 +47,10 @@ namespace Reative.Views
 
                 // https://reactiveui.net/docs/handbook/data-binding/
                 // Console.WriteLine("==> {0}", ViewModel);
-                this
-                    .OneWayBind(ViewModel, vm => vm.Greeting, v => v.tbGreetingLabel.Text)
+
+                var tb = this.FindControl<TextBlock>(nameof(tbGreetingLabel));
+                
+                tb.Bind(TextBlock.TextProperty, new Binding(nameof(ViewModel.Greeting), BindingMode.OneWay))
                     .DisposeWith(disposables);
             });
             AvaloniaXamlLoader.Load(this);
